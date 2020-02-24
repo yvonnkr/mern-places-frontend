@@ -10,6 +10,13 @@ const Users = () => {
       image:
         "https://www.planetware.com/photos-large/MEX/mexico-top-places-cancun-mayan-riviera.jpg",
       places: 3
+    },
+    {
+      id: "u2",
+      name: "John Doe",
+      image:
+        "https://www.planetware.com/photos-large/MEX/mexico-top-places-cancun-mayan-riviera.jpg",
+      places: 1
     }
   ];
 

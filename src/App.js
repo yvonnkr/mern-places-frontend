@@ -5,14 +5,18 @@ import {
   Redirect,
   Switch
 } from "react-router-dom";
+
 import Users from "./users/pages/Users";
 import NewPlace from "./places/pages/NewPlace";
 import PageNotFound from "./shared/components/404";
-
+import User from "./users/pages/User";
 const App = () => {
   return (
     <Router>
       <Switch>
+        <Route path="/:userId/places">
+          <User />
+        </Route>
         <Route path="/places/new">
           <NewPlace />
         </Route>
