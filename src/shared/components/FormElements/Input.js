@@ -11,11 +11,12 @@ const inputReducer = (state, action) => {
         value: action.val,
         isValid: validate(action.val, action.validators)
       };
-    case "TOUCH":
+    case "TOUCH": {
       return {
         ...state,
         isTouched: true
       };
+    }
     default:
       return state;
   }
@@ -29,7 +30,8 @@ const Input = props => {
   });
 
   const { id, onInput } = props;
-  const { value, isValid } = onInput;
+  const { value, isValid } = inputState;
+
   useEffect(() => {
     onInput(id, value, isValid);
   }, [id, value, isValid, onInput]);
@@ -48,7 +50,6 @@ const Input = props => {
     });
   };
 
-  //type of element to render======
   const element =
     props.element === "input" ? (
       <input
@@ -71,13 +72,13 @@ const Input = props => {
 
   return (
     <div
-      className={`form-control ${inputState.isTouched &&
-        !inputState.isValid &&
+      className={`form-control ${!inputState.isValid &&
+        inputState.isTouched &&
         "form-control--invalid"}`}
     >
       <label htmlFor={props.id}>{props.label}</label>
       {element}
-      {inputState.isTouched && !inputState.isValid && <p>{props.errorText}</p>}
+      {!inputState.isValid && inputState.isTouched && <p>{props.errorText}</p>}
     </div>
   );
 };
