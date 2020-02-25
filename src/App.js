@@ -9,8 +9,8 @@ import {
 import Users from "./users/pages/Users";
 import NewPlace from "./places/pages/NewPlace";
 import PageNotFound from "./shared/components/404";
-import User from "./users/pages/User";
 import MainNavigation from "./shared/components/Navigation/MainNavigation";
+import UserPlaces from "./places/pages/UserPlaces";
 
 const App = () => {
   return (
@@ -18,10 +18,10 @@ const App = () => {
       <MainNavigation />
       <main>
         <Switch>
-          <Route path="/:userId/places">
-            <User />
+          <Route path="/:userId/places" exact>
+            <UserPlaces />
           </Route>
-          <Route path="/places/new">
+          <Route path="/places/new" exact>
             <NewPlace />
           </Route>
           <Route path="/" exact>
