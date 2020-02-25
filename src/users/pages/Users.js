@@ -22,7 +22,6 @@ const Users = () => {
 
   return (
     <div>
-      <h1>Users page</h1>
       <UsersList items={USERS} />
     </div>
   );
