@@ -32,17 +32,17 @@ const App = () => {
   if (isLoggedIn) {
     routes = (
       <Switch>
-        <Route path="/places/new" exact>
-          <NewPlace />
-        </Route>
-        <Route path="/places/:placeId" exact>
-          <UpdatePlace />
+        <Route path="/" exact>
+          <Users />
         </Route>
         <Route path="/:userId/places" exact>
           <UserPlaces />
         </Route>
-        <Route path="/" exact>
-          <Users />
+        <Route path="/places/new" exact>
+          <NewPlace />
+        </Route>
+        <Route path="/places/:placeId">
+          <UpdatePlace />
         </Route>
         <Redirect to="/" />
       </Switch>
@@ -50,14 +50,14 @@ const App = () => {
   } else {
     routes = (
       <Switch>
+        <Route path="/" exact>
+          <Users />
+        </Route>
         <Route path="/:userId/places" exact>
           <UserPlaces />
         </Route>
-        <Route path="/auth" exact>
+        <Route path="/auth">
           <Auth />
-        </Route>
-        <Route path="/" exact>
-          <Users />
         </Route>
         <Redirect to="/auth" />
       </Switch>
