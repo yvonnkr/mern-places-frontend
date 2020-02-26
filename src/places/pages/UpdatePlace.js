@@ -4,6 +4,7 @@ import { useParams } from "react-router-dom";
 import Input from "./../../shared/components/FormElements/Input";
 import Button from "./../../shared/components/FormElements/Button";
 import { useForm } from "./../../shared/hooks/form-hook";
+import Card from "../../shared/components/UIElements/Card/Card";
 import {
   VALIDATOR_REQUIRE,
   VALIDATOR_MINLENGTH
@@ -27,7 +28,7 @@ const DUMMY_PLACES = [
   },
   {
     id: "p2",
-    title: "Empire State Building",
+    title: "Emp. State Building",
     description: "One of the most famous sky scrappers in the world",
     imageUrl:
       "https://media.gettyimages.com/photos/new-york-skyline-on-a-sunny-day-with-clear-blue-sky-picture-id670885994?s=612x612",
@@ -42,9 +43,6 @@ const DUMMY_PLACES = [
 
 const UpdatePlace = props => {
   const [isLoading, setIsLoading] = useState(true);
-
-  //get place id
-  const placeId = useParams().placeId;
 
   //initial state
   const initialInputs = {
@@ -62,22 +60,25 @@ const UpdatePlace = props => {
   const [formState, inputHandler, setFormData] = useForm(initialInputs, false);
 
   //get place
+  const placeId = useParams().placeId;
   const identifiedPlace = DUMMY_PLACES.find(place => place.id === placeId);
 
   useEffect(() => {
-    setFormData(
-      {
-        title: {
-          value: identifiedPlace.title,
-          isValid: true
+    if (identifiedPlace) {
+      setFormData(
+        {
+          title: {
+            value: identifiedPlace.title,
+            isValid: true
+          },
+          description: {
+            value: identifiedPlace.description,
+            isValid: true
+          }
         },
-        description: {
-          value: identifiedPlace.description,
-          isValid: true
-        }
-      },
-      true
-    );
+        true
+      );
+    }
 
     setIsLoading(false);
   }, [setFormData, identifiedPlace, setIsLoading]);
@@ -94,7 +95,9 @@ const UpdatePlace = props => {
   if (!identifiedPlace) {
     return (
       <div className="center">
-        <h2>Could not find place!</h2>
+        <Card>
+          <h2>Could not find place!</h2>
+        </Card>
       </div>
     );
   }

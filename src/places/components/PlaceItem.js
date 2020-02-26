@@ -13,7 +13,7 @@ const PlaceItem = props => {
     title,
     description,
     address,
-    creatorId,
+    // creatorId,
     coordinates
   } = props;
 
