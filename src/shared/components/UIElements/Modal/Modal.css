@@ -16,6 +16,10 @@
     color: white;
 }
 
+.modal__header-danger {
+    background: red;
+}
+
 .modal__header h2 {
     margin: 0.5rem;
 }
