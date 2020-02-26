@@ -1,7 +1,9 @@
 import React from "react";
 import { useParams } from "react-router-dom";
+
 import Input from "./../../shared/components/FormElements/Input";
 import Button from "./../../shared/components/FormElements/Button";
+import { useForm } from "./../../shared/hooks/form-hook";
 import {
   VALIDATOR_REQUIRE,
   VALIDATOR_MINLENGTH
@@ -39,8 +41,24 @@ const DUMMY_PLACES = [
 ];
 
 const UpdatePlace = props => {
+  //get place
   const placeId = useParams().placeId;
   const identifiedPlace = DUMMY_PLACES.find(place => place.id === placeId);
+
+  //initial state
+  const initialInputs = {
+    title: {
+      value: identifiedPlace.title,
+      isValid: true
+    },
+    description: {
+      value: identifiedPlace.description,
+      isValid: true
+    }
+  };
+
+  //custom hook
+  const [formState, inputHandler] = useForm(initialInputs, true);
 
   if (!identifiedPlace) {
     return (
@@ -50,8 +68,16 @@ const UpdatePlace = props => {
     );
   }
 
+  //form submit handler
+  const placeUpdateSubmitHandler = e => {
+    e.preventDefault();
+
+    //send to server later
+    console.log(formState.inputs);
+  };
+
   return (
-    <form className="place-form">
+    <form className="place-form" onSubmit={placeUpdateSubmitHandler}>
       <Input
         id="title"
         element="input"
@@ -59,9 +85,9 @@ const UpdatePlace = props => {
         label="Title"
         validators={[VALIDATOR_REQUIRE()]}
         errorText="Please enter a valid title"
-        onInput={() => {}}
-        value={identifiedPlace.title}
-        valid={true}
+        onInput={inputHandler}
+        initialValue={formState.inputs.title.value}
+        initialIsValid={formState.inputs.title.isValid}
       />
       <Input
         id="description"
@@ -69,11 +95,11 @@ const UpdatePlace = props => {
         label="Description"
         validators={[VALIDATOR_MINLENGTH(5)]}
         errorText="Please enter a valid description.(min. 5 characters)"
-        onInput={() => {}}
-        value={identifiedPlace.description}
-        valid={true}
+        onInput={inputHandler}
+        initialValue={formState.inputs.description.value}
+        initialIsValid={formState.inputs.description.isValid}
       />
-      <Button type="submit" disabled={true}>
+      <Button type="submit" disabled={!formState.isValid}>
         UPDATE PLACE
       </Button>
     </form>
