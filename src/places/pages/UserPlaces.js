@@ -1,6 +1,7 @@
-import React from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { useParams } from "react-router-dom";
 import PlaceList from "../components/PlaceList";
+import axios from "axios";
 
 const DUMMY_PLACES = [
   {
@@ -32,9 +33,39 @@ const DUMMY_PLACES = [
 ];
 
 const UserPlaces = () => {
+  //before code
+  // const userId = useParams().userId;
+  // const loadedPlaces = DUMMY_PLACES.filter(p => p.creator === userId);
+  // return <PlaceList items={loadedPlaces} />;
+
+  //tried to fetc data form backend ********************************
+  const [places, setPlaces] = useState([]);
+
   const userId = useParams().userId;
-  const loadedPlaces = DUMMY_PLACES.filter(p => p.creator === userId);
-  return <PlaceList items={loadedPlaces} />;
+  const url = `http://localhost:5000/api/places/user/${userId}`;
+
+  const getUserPlaces = useCallback(async () => {
+    try {
+      const response = await axios.get(url);
+      return response.data.userPlaces;
+    } catch (error) {
+      throw error;
+    }
+  }, [url]);
+
+  useEffect(() => {
+    async function getData() {
+      try {
+        const userPlaces = await getUserPlaces();
+        setPlaces(userPlaces);
+      } catch (error) {
+        console.log(error);
+      }
+    }
+    getData();
+  }, [getUserPlaces]);
+
+  return <PlaceList items={places} />;
 };
 
 export default UserPlaces;
