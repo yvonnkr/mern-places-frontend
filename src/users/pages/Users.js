@@ -6,14 +6,14 @@ const Users = () => {
   const USERS = [
     {
       id: "u1",
-      name: "John Smith",
+      name: "user 1",
       image:
         "https://www.planetware.com/photos-large/MEX/mexico-top-places-cancun-mayan-riviera.jpg",
       places: 3
     },
     {
       id: "u2",
-      name: "John Doe",
+      name: "user 2",
       image:
         "https://www.planetware.com/photos-large/MEX/mexico-top-places-cancun-mayan-riviera.jpg",
       places: 1
