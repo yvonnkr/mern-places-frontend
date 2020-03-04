@@ -1,5 +1,4 @@
 import React, { useState, useContext } from "react";
-import axios from "axios";
 
 import {
   VALIDATOR_EMAIL,
@@ -36,7 +35,7 @@ const Auth = props => {
     //send http request
     if (isLoginMode) {
       try {
-        //signup
+        //login
         const response = await sendRequest(
           "http://localhost:5000/api/users/login",
           "POST",
@@ -46,10 +45,8 @@ const Auth = props => {
           }
         );
 
-        console.log(response); //to cleanup later
-
         //then login
-        auth.login();
+        auth.login(response.user.id);
       } catch (err) {
         console.log(err.message);
       }
@@ -66,10 +63,8 @@ const Auth = props => {
           }
         );
 
-        console.log(response); //to cleanup later
-
         //then login
-        auth.login();
+        auth.login(response.user.id);
       } catch (err) {
         console.log(err.message);
       }

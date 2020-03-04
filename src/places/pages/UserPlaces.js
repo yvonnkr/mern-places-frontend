@@ -1,72 +1,41 @@
-// import React, { useState, useEffect, useCallback } from "react";
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import PlaceList from "../components/PlaceList";
-// import axios from "axios";
-
-const DUMMY_PLACES = [
-  {
-    id: "p1",
-    title: "Empire State Building",
-    description: "One of the most famous sky scrappers in the world",
-    imageUrl:
-      "https://media.gettyimages.com/photos/new-york-skyline-on-a-sunny-day-with-clear-blue-sky-picture-id670885994?s=612x612",
-    address: "20 W 34th St, New York, NY 10001",
-    location: {
-      lat: 40.7484405,
-      lng: -73.9878531
-    },
-    creator: "u1"
-  },
-  {
-    id: "p2",
-    title: "Emp. State Building",
-    description: "One of the most famous sky scrappers in the world",
-    imageUrl:
-      "https://media.gettyimages.com/photos/new-york-skyline-on-a-sunny-day-with-clear-blue-sky-picture-id670885994?s=612x612",
-    address: "20 W 34th St, New York, NY 10001",
-    location: {
-      lat: 40.7484405,
-      lng: -73.9878531
-    },
-    creator: "u2"
-  }
-];
+import { useHttpClient } from "../../shared/hooks/http-hook";
+import ErrorModal from "./../../shared/components/UIElements/ErrorModal";
+import LoadingSpinner from "../../shared/components/UIElements/LoadingSpinner";
 
 const UserPlaces = () => {
+  const [loadedPlaces, setLoadedPlaces] = useState();
+  const { isLoading, error, sendRequest, clearError } = useHttpClient();
   const userId = useParams().userId;
-  const loadedPlaces = DUMMY_PLACES.filter(p => p.creator === userId);
-  return <PlaceList items={loadedPlaces} />;
 
-  // ********//tried to fetc data form backend ********************************
-  // const [places, setPlaces] = useState([]);
+  useEffect(() => {
+    const fetchPlaces = async () => {
+      try {
+        const responseData = await sendRequest(
+          `http://localhost:5000/api/places/user/${userId}`
+        );
 
-  // const userId = useParams().userId;
-  // const url = `http://localhost:5000/api/places/user/${userId}`;
+        setLoadedPlaces(responseData.userPlaces);
+      } catch (error) {
+        console.log(error.message);
+      }
+    };
+    fetchPlaces();
+  }, [userId, sendRequest]);
 
-  // const getUserPlaces = useCallback(async () => {
-  //   try {
-  //     const response = await axios.get(url);
-  //     return response.data.userPlaces;
-  //   } catch (error) {
-  //     throw error;
-  //   }
-  // }, [url]);
-
-  // useEffect(() => {
-  //   async function getData() {
-  //     try {
-  //       const userPlaces = await getUserPlaces();
-
-  //       setPlaces(userPlaces);
-  //     } catch (error) {
-  //       console.log(error.message);
-  //     }
-  //   }
-  //   getData();
-  // }, [getUserPlaces]);
-
-  // return <PlaceList items={places} />;
+  return (
+    <>
+      <ErrorModal error={error} onClear={clearError} />
+      {isLoading && (
+        <div className="center">
+          <LoadingSpinner />
+        </div>
+      )}
+      {!isLoading && loadedPlaces && <PlaceList items={loadedPlaces} />}
+    </>
+  );
 };
 
 export default UserPlaces;

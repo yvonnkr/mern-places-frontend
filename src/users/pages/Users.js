@@ -11,11 +11,11 @@ const Users = () => {
 
   useEffect(() => {
     try {
-      const sendHttpRequest = async () => {
+      const fetchUsers = async () => {
         const data = await sendRequest("http://localhost:5000/api/users");
         setLoadedUsers(data.users);
       };
-      sendHttpRequest();
+      fetchUsers();
     } catch (err) {
       console.log(err.message);
     }
