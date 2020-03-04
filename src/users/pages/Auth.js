@@ -39,13 +39,14 @@ const Auth = props => {
     if (isLoginMode) {
       //signup http request
       try {
-        const response = await axios.post(
-          "http://localhost:5000/api/users/login",
-          {
+        const response = await axios({
+          method: "POST",
+          url: "http://localhost:5000/api/users/login",
+          data: {
             email: formState.inputs.email.value,
             password: formState.inputs.password.value
           }
-        );
+        });
 
         console.log(response.data);
 
@@ -65,14 +66,15 @@ const Auth = props => {
     } else {
       //signup http request
       try {
-        const response = await axios.post(
-          "http://localhost:5000/api/users/signup",
-          {
+        const response = await axios({
+          method: "POST",
+          url: "http://localhost:5000/api/users/signup",
+          data: {
             name: formState.inputs.name.value,
             email: formState.inputs.email.value,
             password: formState.inputs.password.value
           }
-        );
+        });
 
         console.log(response.data);
 
