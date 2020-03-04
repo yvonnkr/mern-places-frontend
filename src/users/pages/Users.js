@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-// import axios from "axios";
 
 import UsersList from "./../components/UsersList";
 import ErrorModal from "./../../shared/components/UIElements/ErrorModal";
@@ -11,15 +10,15 @@ const Users = () => {
   const { isLoading, error, sendRequest, clearError } = useHttpClient();
 
   useEffect(() => {
-    const sendHttpRequest = async () => {
-      try {
+    try {
+      const sendHttpRequest = async () => {
         const data = await sendRequest("http://localhost:5000/api/users");
         setLoadedUsers(data.users);
-      } catch (err) {
-        console.log(err);
-      }
-    };
-    sendHttpRequest();
+      };
+      sendHttpRequest();
+    } catch (err) {
+      console.log(err.message);
+    }
   }, [sendRequest]);
 
   return (
@@ -36,27 +35,3 @@ const Users = () => {
 };
 
 export default Users;
-
-// useEffect(() => {
-//   const sendRequest = async () => {
-//     setIsLoading(true);
-//     try {
-//       const response = await axios({
-//         method: "GET",
-//         url: "http://localhost:5000/api/users"
-//       });
-//       setLoadedUsers(response.data.users);
-//     } catch (err) {
-//       setError(
-//         err.response.data.message || "Something went wrong,please try again."
-//       );
-//     }
-//     setIsLoading(false);
-//   };
-
-//   sendRequest();
-// }, []);
-
-// const errorHandler = () => {
-//   setError(null);
-// };

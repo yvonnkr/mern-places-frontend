@@ -14,15 +14,14 @@ import { useForm } from "../../shared/hooks/form-hook";
 import ErrorModal from "./../../shared/components/UIElements/ErrorModal";
 import LoadingSpinner from "./../../shared/components/UIElements/LoadingSpinner";
 import "./Auth.css";
+import { useHttpClient } from "../../shared/hooks/http-hook";
 
 const Auth = props => {
   const [isLoginMode, setIsLoginMode] = useState(true);
-  const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState();
-
+  const { isLoading, error, sendRequest, clearError } = useHttpClient(); //from custom hook
   const auth = useContext(AuthContext);
 
-  //custom hook
+  //from custom hook
   const [formState, inputHandler, setFormData] = useForm(
     {
       email: { value: "", isValid: false },
@@ -35,61 +34,44 @@ const Auth = props => {
     e.preventDefault();
 
     //send http request
-    setIsLoading(true);
     if (isLoginMode) {
-      //signup http request
       try {
-        const response = await axios({
-          method: "POST",
-          url: "http://localhost:5000/api/users/login",
-          data: {
+        //signup
+        const response = await sendRequest(
+          "http://localhost:5000/api/users/login",
+          "POST",
+          {
             email: formState.inputs.email.value,
             password: formState.inputs.password.value
           }
-        });
+        );
 
-        console.log(response.data);
-
-        //once done set isLoading(false) if no errors
-        setIsLoading(false);
+        console.log(response); //to cleanup later
 
         //then login
         auth.login();
       } catch (err) {
-        // console.log(error.response.data); //axios error
-        setError(
-          err.response.data.message || "Something went wrong, please try again!"
-        );
-
-        setIsLoading(false);
+        console.log(err.message);
       }
     } else {
-      //signup http request
       try {
-        const response = await axios({
-          method: "POST",
-          url: "http://localhost:5000/api/users/signup",
-          data: {
+        //signup
+        const response = await sendRequest(
+          "http://localhost:5000/api/users/signup",
+          "POST",
+          {
             name: formState.inputs.name.value,
             email: formState.inputs.email.value,
             password: formState.inputs.password.value
           }
-        });
+        );
 
-        console.log(response.data);
-
-        //once done set isLoading(false) if no errors
-        setIsLoading(false);
+        console.log(response); //to cleanup later
 
         //then login
         auth.login();
       } catch (err) {
-        // console.log(error.response.data); //axios error
-        setError(
-          err.response.data.message || "Something went wrong, please try again!"
-        );
-
-        setIsLoading(false);
+        console.log(err.message);
       }
     }
   };
@@ -112,13 +94,9 @@ const Auth = props => {
     setIsLoginMode(prevMode => !prevMode);
   };
 
-  const errorHandler = () => {
-    setError(null);
-  };
-
   return (
     <>
-      <ErrorModal error={error} onClear={errorHandler} />
+      <ErrorModal error={error} onClear={clearError} />
       <Card className="authentication">
         {isLoading && <LoadingSpinner asOverlay />}
         {isLoginMode ? <h2>Login Required</h2> : <h2>Sign Up</h2>}
