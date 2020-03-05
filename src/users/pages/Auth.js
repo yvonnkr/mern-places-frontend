@@ -55,15 +55,18 @@ const Auth = props => {
       }
     } else {
       try {
+        //to be able to accept other content type eg image / not just json
+        const formData = new FormData();
+        formData.append("name", formState.inputs.name.value);
+        formData.append("email", formState.inputs.email.value);
+        formData.append("password", formState.inputs.password.value);
+        formData.append("image", formState.inputs.image.value);
+
         //signup
         const response = await sendRequest(
           "http://localhost:5000/api/users/signup",
           "POST",
-          {
-            name: formState.inputs.name.value,
-            email: formState.inputs.email.value,
-            password: formState.inputs.password.value
-          }
+          formData
         );
 
         //then login
