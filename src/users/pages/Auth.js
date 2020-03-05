@@ -55,7 +55,7 @@ const Auth = props => {
       }
     } else {
       try {
-        //to be able to accept other content type eg image / not just json
+        //to be able to accept other content type eg image / not just json --formdata is js buildIn.
         const formData = new FormData();
         formData.append("name", formState.inputs.name.value);
         formData.append("email", formState.inputs.email.value);
