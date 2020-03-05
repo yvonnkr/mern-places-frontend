@@ -17,7 +17,7 @@ const PlaceItem = props => {
     title,
     description,
     address,
-    // creatorId,
+    creatorId,
     coordinates
   } = props;
 
@@ -32,18 +32,6 @@ const PlaceItem = props => {
 
   const showDeleteWarningHandler = () => setShowConfirmDeleteModal(true);
   const cancelDeleteHandler = () => setShowConfirmDeleteModal(false);
-
-  // useEffect(() => {
-  //   const fetchPlace = async () => {
-  //     try {
-  //       const responseData = await sendRequest(
-  //         `http://localhost:5000/api/places/${id}`
-  //       );
-  //       setLoadedPlace(responseData.place);
-  //     } catch (err) {}
-  //   };
-  //   fetchPlace();
-  // }, [sendRequest,id]);
 
   const confirmDeleteHandler = async e => {
     setShowConfirmDeleteModal(false);
@@ -106,8 +94,10 @@ const PlaceItem = props => {
             <Button inverse onClick={openMapHandler}>
               VIEW ON MAP
             </Button>
-            {auth.isLoggedIn && <Button to={`/places/${id}`}> EDIT</Button>}
-            {auth.isLoggedIn && (
+            {auth.userId === creatorId && (
+              <Button to={`/places/${id}`}> EDIT</Button>
+            )}
+            {auth.userId === creatorId && (
               <Button danger onClick={showDeleteWarningHandler}>
                 DELETE
               </Button>
