@@ -12,6 +12,7 @@ import { useHttpClient } from "../../shared/hooks/http-hook";
 import ErrorModal from "./../../shared/components/UIElements/ErrorModal";
 import LoadingSpinner from "../../shared/components/UIElements/LoadingSpinner";
 import { AuthContext } from "./../../shared/context/auth-context";
+import ImageUpload from "./../../shared/components/UIElements/ImageUpload";
 import "./PlaceForm.css";
 
 const NewPlace = () => {
@@ -28,6 +29,10 @@ const NewPlace = () => {
     address: {
       value: "",
       isValid: false
+    },
+    image: {
+      value: null,
+      isValid: false
     }
   };
 
@@ -42,14 +47,15 @@ const NewPlace = () => {
 
     //http request
     try {
-      await sendRequest("http://localhost:5000/api/places", "POST", {
-        title: formState.inputs.title.value,
-        description: formState.inputs.description.value,
-        address: formState.inputs.address.value,
-        imageUrl:
-          "https://media.gettyimages.com/photos/new-york-skyline-on-a-sunny-day-with-clear-blue-sky-picture-id670885994?s=612x612",
-        creator: auth.userId
-      });
+      //to be able to accept other content type eg image / not just json --formdata is js buildIn.
+      const formData = new FormData();
+      formData.append("title", formState.inputs.title.value);
+      formData.append("description", formState.inputs.description.value);
+      formData.append("address", formState.inputs.address.value);
+      formData.append("creator", auth.userId);
+      formData.append("imageUrl", formState.inputs.image.value);
+
+      await sendRequest("http://localhost:5000/api/places", "POST", formData);
 
       //then redirect
       history.push("/");
@@ -88,6 +94,11 @@ const NewPlace = () => {
           validators={[VALIDATOR_REQUIRE()]}
           errorText="Please enter a valid address."
           onInput={inputHandler}
+        />
+        <ImageUpload
+          id="image"
+          onInput={inputHandler}
+          errorText="Please provide an image"
         />
         <Button type="submit" disabled={!formState.isValid}>
           ADD PLACE
