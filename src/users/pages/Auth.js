@@ -33,6 +33,8 @@ const Auth = props => {
   const authSubmitHandler = async e => {
     e.preventDefault();
 
+    console.log(formState.inputs); //to delete*******
+
     //send http request
     if (isLoginMode) {
       try {
@@ -75,14 +77,15 @@ const Auth = props => {
   const switchModeHandler = () => {
     if (!isLoginMode) {
       setFormData(
-        { ...formState.inputs, name: undefined },
+        { ...formState.inputs, name: undefined, image: undefined },
         formState.inputs.email.isValid && formState.inputs.password.isValid
       );
     } else {
       setFormData(
         {
           ...formState.inputs,
-          name: { value: "", isValid: false }
+          name: { value: "", isValid: false },
+          image: { value: null, isValid: false }
         },
         false
       );
@@ -109,7 +112,9 @@ const Auth = props => {
               onInput={inputHandler}
             />
           )}
-          {!isLoginMode && <ImageUpload id="image" center />}
+          {!isLoginMode && (
+            <ImageUpload id="image" center onInput={inputHandler} />
+          )}
           <Input
             id="email"
             element="input"
