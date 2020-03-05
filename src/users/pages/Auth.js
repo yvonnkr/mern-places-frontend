@@ -14,6 +14,7 @@ import ErrorModal from "./../../shared/components/UIElements/ErrorModal";
 import LoadingSpinner from "./../../shared/components/UIElements/LoadingSpinner";
 import "./Auth.css";
 import { useHttpClient } from "../../shared/hooks/http-hook";
+import ImageUpload from "./../../shared/components/UIElements/ImageUpload";
 
 const Auth = props => {
   const [isLoginMode, setIsLoginMode] = useState(true);
@@ -108,6 +109,7 @@ const Auth = props => {
               onInput={inputHandler}
             />
           )}
+          {!isLoginMode && <ImageUpload id="image" center />}
           <Input
             id="email"
             element="input"
