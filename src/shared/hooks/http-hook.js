@@ -5,26 +5,30 @@ export const useHttpClient = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState();
 
-  const sendRequest = useCallback(async (url, method = "GET", data = null) => {
-    setIsLoading(true);
+  const sendRequest = useCallback(
+    async (url, method = "GET", data = null, headers = {}) => {
+      setIsLoading(true);
 
-    try {
-      const response = await axios({
-        method,
-        url,
-        data
-      });
+      try {
+        const response = await axios({
+          method,
+          url,
+          data,
+          headers
+        });
 
-      setIsLoading(false);
-      return response.data;
-    } catch (err) {
-      setError(
-        err.response.data.message || "Something went wrong,please try again."
-      );
-      setIsLoading(false);
-      throw err;
-    }
-  }, []);
+        setIsLoading(false);
+        return response.data;
+      } catch (err) {
+        setError(
+          err.response.data.message || "Something went wrong,please try again."
+        );
+        setIsLoading(false);
+        throw err;
+      }
+    },
+    []
+  );
 
   const clearError = () => {
     setError(null);

@@ -33,8 +33,6 @@ const Auth = props => {
   const authSubmitHandler = async e => {
     e.preventDefault();
 
-    console.log(formState.inputs); //to delete*******
-
     //send http request
     if (isLoginMode) {
       try {
@@ -49,7 +47,7 @@ const Auth = props => {
         );
 
         //then login
-        auth.login(response.user.id);
+        auth.login(response.userId, response.token);
       } catch (err) {
         console.log(err.message);
       }
@@ -70,7 +68,7 @@ const Auth = props => {
         );
 
         //then login
-        auth.login(response.user.id);
+        auth.login(response.userId, response.token);
       } catch (err) {
         console.log(err.message);
       }

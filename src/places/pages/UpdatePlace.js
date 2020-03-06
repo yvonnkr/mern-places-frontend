@@ -33,7 +33,7 @@ const UpdatePlace = props => {
   const [loadedPlace, setLoadedPlace] = useState();
   const placeId = useParams().placeId;
   const history = useHistory();
-  const { userId } = useContext(AuthContext);
+  const auth = useContext(AuthContext);
 
   //fetch place and setform with place data
   useEffect(() => {
@@ -75,11 +75,14 @@ const UpdatePlace = props => {
         {
           title: formState.inputs.title.value,
           description: formState.inputs.description.value
+        },
+        {
+          Authorization: `Bearer ${auth.token}`
         }
       );
 
       //redirect
-      history.push(`/${userId}/places`);
+      history.push(`/${auth.userId}/places`);
       // history.goBack();
     } catch (err) {}
   };
