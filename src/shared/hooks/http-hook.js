@@ -21,7 +21,9 @@ export const useHttpClient = () => {
         return response.data;
       } catch (err) {
         setError(
-          err.response.data.message || "Something went wrong,please try again."
+          err.response
+            ? err.response.data.message
+            : "Something went wrong,please try again."
         );
         setIsLoading(false);
         throw err;
