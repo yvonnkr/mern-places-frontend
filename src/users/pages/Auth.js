@@ -38,7 +38,7 @@ const Auth = props => {
       try {
         //login
         const response = await sendRequest(
-          "http://localhost:5000/api/users/login",
+          `${process.env.REACT_APP_BACKEND_URL}/users/login`,
           "POST",
           {
             email: formState.inputs.email.value,
@@ -62,7 +62,7 @@ const Auth = props => {
 
         //signup
         const response = await sendRequest(
-          "http://localhost:5000/api/users/signup",
+          `${process.env.REACT_APP_BACKEND_URL}/users/signup`,
           "POST",
           formData
         );
